@@ -1,0 +1,40 @@
+{
+  "name": "is-it-willman",
+  "version": "0.0.1",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "express": "^4.15.3",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
+    "redux": "^3.7.2",
+    "redux-saga": "^0.15.6"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "repository": {
+  },
+  "license": "MIT",
+  "keywords": [
+    "node"
+  ],
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "webpack": "^3.5.5"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "react"
+    ]
+  }
+}
