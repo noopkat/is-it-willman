@@ -3,15 +3,18 @@ import { connect } from 'react-redux';
 
 class CanvasDrawer extends React.Component {
     componentWillReceiveProps(nextProps) {
-      if (nextProps.captureMode) {
+      const { captureMode, videoElement, videoElementWidth, videoElementHeight } = nextProps;
+      if (captureMode) {
         const ctx = this.refs.canvas.getContext('2d');
-        ctx.drawImage(nextProps.state.videoElement, 0, 0, 500, 300);
+        ctx.drawImage(videoElement, 0, 0, videoElementWidth, videoElementHeight);
         nextProps.onCanvasDraw(this.refs.canvas);
       }
     }
     render() {
+      const { videoElementWidth, videoElementHeight } = this.props;
+
       return (
-        <canvas ref="canvas" width={500} height={300} style={{display: 'none'}}/>
+        <canvas ref="canvas" width={videoElementWidth} height={videoElementHeight} style={{display: 'none'}}/>
       );
     }
 }

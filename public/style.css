@@ -1,9 +1,3 @@
-/* styles */
-/* called by your view template */
-
-/* You might want to try something fancier: */
-/* less: http://lesscss.org/ */
-
 * {
   box-sizing: border-box;
 }
@@ -55,6 +49,7 @@ button {
   cursor: pointer;
   position: relative;
   top: 20px;
+  margin-right: 15px;
 }
 
 button:hover {

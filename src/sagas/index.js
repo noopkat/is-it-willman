@@ -1,5 +1,5 @@
 import { call, put, takeEvery, all } from 'redux-saga/effects';
-import { subscriptionKey, personGroup, willmanid } from '../secrets';
+import { subscriptionKey, personGroup, personId } from '../secrets';
 
 function* onGetMediaRequested() {
   try {
@@ -30,25 +30,28 @@ function* onGetMediaSuccess({stream}) {
 
 function* onGetMediaError({error}) {
   console.log('error getting media stream:', error);
+  yield put({type: "GET_MEDIA_ERROR", error});
 }
 
 function* onIdentifyFace({photo}) {
   try {
     const faces = yield call(detectFaces, photo);
+    if (!faces.length) return yield put({type: "IDENTIFY_FACE_ERROR"});
+
     const prediction = yield call(recogniseFaces, faces);
-    console.log(prediction);
 
     const result = prediction[0].candidates.length ? prediction[0].candidates[0].personId : "";
-    const humanResult = (result === willmanid) ? "Yes! I think it's Willman." : "No, I don't think it's Willman.";
+    const humanResult = (result === personId) ? "Yes! I think it's Willman." : "No, I don't think it's Willman.";
     yield put({type: "IDENTIFY_FACE_SUCCESSFUL", humanResult});
   } 
   catch(error) {
-    yield put({type: "IDENTIFY_FACE_ERROR", error});
+    yield put({type: "IDENTIFY_FACE_ERROR"});
   }
 };
 
 function detectFaces(photo) {
-  const detectUrl = 'https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true';
+  const detectUrl = "https://westus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true";
+
   const options = {
     method: "POST",
     body: photo,
@@ -57,18 +60,18 @@ function detectFaces(photo) {
       "Ocp-Apim-Subscription-Key": subscriptionKey
     }
   };
-  return fetch(detectUrl, options).then((response) => response.json());
+
+  return fetch(detectUrl, options)
+           .then((response) => response.json());
 };
 
-function recogniseFaces(facelist) {
-  if (!facelist.length) Promise.reject(new Error("ENO_FACES"));
- 
-  const identifyUrl = 'https://westus.api.cognitive.microsoft.com/face/v1.0/identify';
-  const faceids = facelist.map((face) => face.faceId);
+function recogniseFaces(faceList) {
+  const faceIds = faceList.map((face) => face.faceId);
+  const identifyUrl = "https://westus.api.cognitive.microsoft.com/face/v1.0/identify";
   
   const body = {    
       "personGroupId": personGroup,
-      "faceIds": faceids,
+      "faceIds": faceIds,
       "maxNumOfCandidatesReturned": 1,
       "confidenceThreshold": 0.4
   }
@@ -82,14 +85,13 @@ function recogniseFaces(facelist) {
     }
   };
 
-  return fetch(identifyUrl, options).then((response) => response.json());
+  return fetch(identifyUrl, options)
+          .then((response) => response.json());
 };
 
 export default function* rootSaga() {
-  console.log('hello I am saga');
-
   yield takeEvery("GET_MEDIA_SUCCESSFUL", onGetMediaSuccess);
   yield takeEvery("GET_MEDIA_REQUESTED", onGetMediaRequested);
   yield takeEvery("GET_MEDIA_ERROR", onGetMediaError);
-  yield takeEvery("IDENTIFY_FACE", onIdentifyFace);
+  yield takeEvery("IDENTIFY_FACE_REQUESTED", onIdentifyFace);
 }

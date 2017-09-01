@@ -7,8 +7,6 @@ const initialState = {
   poseMode: true,
   previewMode: false,
   identifyMode: false,
-  showImage: false,
-  showVideo: true,
   lastCapturedImgData: '',
   lastCapturedImgBlob: null,
   resultContent: ''
@@ -20,7 +18,7 @@ const reducer = (state=initialState, action) => {
   }
 
   if (action.type === 'VIDEO_CAN_PLAY') {
-    return Object.assign({}, state, {videoElement: action.video, videoElementHeight: action.video.videoHeight, videoElementWidth: action.video.videoWidth});
+    return Object.assign({}, state, {videoElement: action.video, videoElementHeight: action.video.videoHeight, videoElementWidth: action.video.videoWidth, resultContent: ''});
   };
 
   if (action.type === 'ENTER_CAPTURE_MODE') {
@@ -33,15 +31,23 @@ const reducer = (state=initialState, action) => {
 
   if (action.type === 'CANVAS_CAPTURE_COMPLETE') {
     const { lastCapturedImgData, lastCapturedImgBlob } = action;
-    return Object.assign({}, state, {captureMode: false, poseMode: false, previewMode: true, showVideo: false, showImage: true, lastCapturedImgData, lastCapturedImgBlob});
+    return Object.assign({}, state, {captureMode: false, poseMode: false, previewMode: true, lastCapturedImgData, lastCapturedImgBlob});
   }
 
   if (action.type === 'RESET_APP') {
-    return Object.assign({}, state, {captureMode: false, poseMode: true, previewMode: false, identifyMode: false, showVideo: true, showImage: false, resultContent: ''});
+    return Object.assign({}, state, {captureMode: false, poseMode: true, previewMode: false, identifyMode: false, resultContent: ''});
   }
 
   if (action.type === 'IDENTIFY_FACE_SUCCESSFUL') {
     return Object.assign({}, state, {resultContent: action.humanResult, identifyMode: true, previewMode: false});
+  };
+
+  if (action.type === 'IDENTIFY_FACE_ERROR') {
+    return Object.assign({}, state, {resultContent: "Oops! Please make sure your face is clearly visible in the shot.", identifyMode: true, previewMode: false});
+  };
+
+  if (action.type === 'GET_MEDIA_ERROR') {
+    return Object.assign({}, state, {resultContent: "Oops! We're having trouble accessing your webcam."});
   };
 
   return state;

@@ -11,7 +11,6 @@ import rootSaga from './sagas';
 const saga = createSagaMiddleware();
 const middleware = [saga];
 
-
 const store = createStore(
   reducer,
   applyMiddleware(...middleware)
