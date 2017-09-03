@@ -12,14 +12,12 @@ function* onGetMediaRequested() {
 };
 
 function getMediaStream() {
-  return new Promise((resolve, reject) => {
-    navigator.getMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia);
-    const getMediaOptions = {
-      video: true,
-      audio: false
-    };
-    navigator.getMedia(getMediaOptions, resolve, reject);
-  });
+  const constraints = {
+    video: true,
+    audio: false
+  };
+
+  return navigator.mediaDevices.getUserMedia(constraints);
 };
 
 function* onGetMediaSuccess({stream}) {
