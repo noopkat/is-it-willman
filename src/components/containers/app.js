@@ -20,7 +20,7 @@ const App = (state) => {
   } = state;
 
   const videoStyle = {
-    display: (poseMode ? 'block' : 'none')
+    display: ((poseMode && videoSrc) ? 'block' : 'none')
   };
   
   return (

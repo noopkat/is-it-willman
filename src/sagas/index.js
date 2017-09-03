@@ -26,11 +26,6 @@ function* onGetMediaSuccess({stream}) {
   yield put({type: "SET_VIDEO_SRC", videoSrc: src});
 }
 
-function* onGetMediaError({error}) {
-  console.log('error getting media stream:', error);
-  yield put({type: "GET_MEDIA_ERROR", error});
-}
-
 function* onIdentifyFace({photo}) {
   try {
     const faces = yield call(detectFaces, photo);
@@ -90,6 +85,5 @@ function recogniseFaces(faceList) {
 export default function* rootSaga() {
   yield takeEvery("GET_MEDIA_SUCCESSFUL", onGetMediaSuccess);
   yield takeEvery("GET_MEDIA_REQUESTED", onGetMediaRequested);
-  yield takeEvery("GET_MEDIA_ERROR", onGetMediaError);
   yield takeEvery("IDENTIFY_FACE_REQUESTED", onIdentifyFace);
 }
