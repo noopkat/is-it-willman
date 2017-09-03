@@ -4,7 +4,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "build": "webpack -p"
+    "build": "webpack -p",
+    "dev": "webpack --progress --watch"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
