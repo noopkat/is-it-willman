@@ -32,7 +32,7 @@ const App = (state) => {
 
       <div id="results">{resultContent}</div>
      
-       {  (poseMode) && 
+       {  (poseMode && videoSrc) && 
           <button id="startbutton" onClick={() => onTakePhoto()}>Take photo</button>
        }
 
