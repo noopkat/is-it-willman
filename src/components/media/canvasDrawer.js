@@ -11,10 +11,14 @@ class CanvasDrawer extends React.Component {
       }
     }
     render() {
-      const { videoElementWidth, videoElementHeight } = this.props;
+      const { videoElementWidth, videoElementHeight, previewMode, identifyMode } = this.props;
+
+      const canvasStyle = {
+        display: ((previewMode || identifyMode) ? 'block' : 'none')
+      };
 
       return (
-        <canvas ref="canvas" width={videoElementWidth} height={videoElementHeight} style={{display: 'none'}}/>
+        <canvas ref="canvas" width={videoElementWidth} height={videoElementHeight} style={canvasStyle}/>
       );
     }
 }
@@ -24,16 +28,17 @@ const mapStateToProps = (state) => {
     videoElement: state.videoElement,
     videoElementHeight: state.videoElementHeight,
     videoElementWidth: state.videoElementWidth,
-    captureMode: state.captureMode
+    captureMode: state.captureMode,
+    identifyMode: state.identifyMode,
+    previewMode: state.previewMode
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onCanvasDraw: (canvas) => {
-      const lastCapturedImgData = canvas.toDataURL("image/png");
       canvas.toBlob((lastCapturedImgBlob) => {
-        dispatch({type: 'CANVAS_CAPTURE_COMPLETE', lastCapturedImgData, lastCapturedImgBlob});
+        dispatch({type: 'CANVAS_CAPTURE_COMPLETE', lastCapturedImgBlob});
       });
     }
   }

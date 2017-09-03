@@ -10,7 +10,6 @@ const App = (state) => {
     videoElementWidth,
     videoElementHeight,
     lastCapturedImgBlob,
-    lastCapturedImgData,
     onTakePhoto,
     onStartover,
     onIdentify,
@@ -23,18 +22,14 @@ const App = (state) => {
   const videoStyle = {
     display: (poseMode ? 'block' : 'none')
   };
-
-  const imageStyle = {
-    display: ((previewMode || identifyMode) ? 'block' : 'none')
-  };
-
+  
   return (
     <div>
       <header><h1>Is this Willman?</h1></header>
 
       <video id="video" style={videoStyle} onPlay={(e) => onCanPlay(e)} autoPlay src={videoSrc}>Video stream not available.</video>
-      <img id="photo" style={imageStyle} width={videoElementWidth} height={videoElementHeight} alt="The screen capture will appear in this box." src={lastCapturedImgData}/>
-    
+      <CanvasDrawer />
+
       <div id="results">{resultContent}</div>
      
        {  (poseMode) && 
@@ -48,8 +43,6 @@ const App = (state) => {
       {  (previewMode) && 
           <button id="identify" onClick={() => onIdentify(lastCapturedImgBlob)}>Identify!</button>
       }
-      
-      <CanvasDrawer />
 
       <script src="bundle.js"></script>
     </div>
@@ -62,7 +55,6 @@ const mapStateToProps = (state) => {
     videoElement: state.videoElement,
     videoElementHeight: state.videoElementHeight,
     videoElementWidth: state.videoElementWidth,
-    lastCapturedImgData: state.lastCapturedImgData,
     lastCapturedImgBlob: state.lastCapturedImgBlob,
     resultContent: state.resultContent,
     poseMode: state.poseMode,

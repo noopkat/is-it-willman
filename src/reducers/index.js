@@ -7,7 +7,6 @@ const initialState = {
   poseMode: true,
   previewMode: false,
   identifyMode: false,
-  lastCapturedImgData: '',
   lastCapturedImgBlob: null,
   resultContent: ''
 };
@@ -30,8 +29,8 @@ const reducer = (state=initialState, action) => {
   };
 
   if (action.type === 'CANVAS_CAPTURE_COMPLETE') {
-    const { lastCapturedImgData, lastCapturedImgBlob } = action;
-    return Object.assign({}, state, {captureMode: false, poseMode: false, previewMode: true, lastCapturedImgData, lastCapturedImgBlob});
+    const { lastCapturedImgBlob } = action;
+    return Object.assign({}, state, {captureMode: false, poseMode: false, previewMode: true, lastCapturedImgBlob});
   }
 
   if (action.type === 'RESET_APP') {
